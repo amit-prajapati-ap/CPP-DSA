@@ -1,0 +1,11 @@
+void solution(int *nums,int *output,int *ans,int i,int n) {
+    if(i>=n) {
+        ans.push_back(output);
+        return;
+    }
+    //EXCLUDE
+    solution(nums,output,ans,i+1,n);
+    //INCLUDE
+    output.push_back(nums[i]);
+    solution(nums,output,ans,i+1,n);
+}
