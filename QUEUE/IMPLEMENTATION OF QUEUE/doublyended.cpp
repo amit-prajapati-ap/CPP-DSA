@@ -138,7 +138,7 @@ void print(queue q)
 int main()
 {
     queue q(5);
-    cout<<q.empty()<<endl;
+    cout << q.empty() << endl;
     q.front();
     q.push_back(1);
     q.push_back(2);
