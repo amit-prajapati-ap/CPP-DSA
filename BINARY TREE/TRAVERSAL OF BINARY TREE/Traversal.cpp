@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <stack>
 using namespace std;
 class node
 {
@@ -14,22 +15,33 @@ public:
         right = NULL;
     }
 };
-node *buildtree(node *root)
+void BuildFromLevelOrder(node *&root)
 {
-
+    queue<node *> q;
     int data;
-    cout << "Enter the Data in BT : ";
+    cout << "Enter the Data For Root Node : ";
     cin >> data;
-    if (data == -1)
-    {
-        return NULL;
-    }
     root = new node(data);
-    cout << "Enter The data In The Left Of " << data << endl;
-    root->left = buildtree(root->left);
-    cout << "Enter The data In The right Of " << data << endl;
-    root->right = buildtree(root->right);
-    return root;
+    q.push(root);
+    while (!q.empty())
+    {
+        node *temp = q.front();
+        q.pop();
+        cout << "Enter Left Node Data For : " << temp->data << " : ";
+        cin >> data;
+        if (data != -1)
+        {
+            temp->left = new node(data);
+            q.push(temp->left);
+        }
+        cout << "Enter Right Node Data For : " << temp->data << " : ";
+        cin >> data;
+        if (data != -1)
+        {
+            temp->right = new node(data);
+            q.push(temp->right);
+        }
+    }
 }
 void LevelOrder(node *root)
 {
@@ -92,12 +104,61 @@ void Postorder(node *root)
     Postorder(root->right);
     cout << root->data << "  ";
 }
+void ReverseLevelOrder(node *root)
+{
+    stack<node *> s;
+    queue<node *> q;
+    q.push(root);
+    q.push(NULL);
+    while (!q.empty())
+    {
+        node *temp = q.front();
+        q.pop();
+        if (temp == NULL)
+        {
+            s.push(NULL);
+            if (!q.empty())
+            {
+                q.push(NULL);
+            }
+        }
+        else
+        {
+            s.push(temp);
+            if (temp->right)
+            {
+                q.push(temp->right);
+            }
+            if (temp->left)
+            {
+                q.push(temp->left);
+            }
+        }
+    }
+    s.pop();//Removing 1st NULL
+    while (!s.empty())
+    {
+        node *temp = s.top();
+        s.pop();
+        if (temp == NULL)
+        {
+            cout << endl;
+        }
+        else
+        {
+            cout << temp->data << "  ";
+        }
+    }
+    cout<<endl;
+}
 int main()
 {
     node *root = NULL;
-    root = buildtree(root);
+    BuildFromLevelOrder(root);
     cout << "Level Order Traversal : " << endl;
     LevelOrder(root);
+    cout << "Reverse Level Order Traversal : " << endl;
+    ReverseLevelOrder(root);
     cout << "Inorder Traversal : " << endl;
     Inorder(root);
     cout << endl;
