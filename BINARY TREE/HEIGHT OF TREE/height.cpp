@@ -72,9 +72,19 @@ void LevelOrder(node *root)
         }
     }
 }
+int TreeHeight(node* root) {
+    if (root == NULL)
+    {
+        return 0;
+    }
+    int left = TreeHeight(root->left);
+    int right = TreeHeight(root->right);
+    return (max(left,right) + 1);
+}
 int main()
 {
     node *root = NULL;
     BuildFromLevelOrder(root);
     LevelOrder(root);
+    cout<<"Total Height Of Tree is : "<<TreeHeight(root)<<endl;
 }
