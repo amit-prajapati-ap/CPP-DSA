@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <vector>
 #include <stack>
 using namespace std;
 class node
@@ -135,7 +136,7 @@ void ReverseLevelOrder(node *root)
             }
         }
     }
-    s.pop();//Removing 1st NULL
+    s.pop(); // Removing 1st NULL
     while (!s.empty())
     {
         node *temp = s.top();
@@ -149,7 +150,90 @@ void ReverseLevelOrder(node *root)
             cout << temp->data << "  ";
         }
     }
-    cout<<endl;
+    cout << endl;
+}
+void count(node *root, int &size)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+    size++;
+    count(root->left, size);
+    count(root->right, size);
+}
+void InorderIterational(node *root)
+{
+    stack<node *> s;
+    while (root != NULL || !s.empty())
+    {
+        while (root != NULL)
+        {
+            s.push(root);
+            root = root->left;
+        }
+        root = s.top();
+        s.pop();
+        cout << root->data << "  ";
+        root = root->right;
+    }
+    cout << endl;
+}
+void PreorderIterational(node *root)
+{
+    stack<node *> s;
+    while (root != NULL || !s.empty())
+    {
+        while (root != NULL)
+        {
+            s.push(root);
+            cout << root->data << "  ";
+            root = root->left;
+        }
+        root = s.top();
+        s.pop();
+        root = root->right;
+    }
+    cout << endl;
+}
+vector<int> SolvedPostorderIterational(node *root)
+{
+    vector<int> ans;
+    stack<node *> s;
+    while (true)
+    {
+        while (root)
+        {
+            s.push(root);
+            s.push(root);
+            root = root->left;
+        }
+        if (s.empty())
+        {
+            return ans;
+        }
+        root = s.top();
+        s.pop();
+        if (!s.empty() && s.top() == root)
+        {
+            root = root->right;
+        }
+        else
+        {
+            ans.push_back(root->data);
+            root = NULL;
+        }
+    }
+    return ans;
+}
+void PostorderIterational(node *root)
+{
+    vector<int> ans = SolvedPostorderIterational(root);
+    for (auto i : ans)
+    {
+        cout << i << "  ";
+    }
+    cout << endl;
 }
 int main()
 {
@@ -167,4 +251,14 @@ int main()
     cout << endl;
     cout << "PostOrder Traversal : " << endl;
     Postorder(root);
+    cout << endl;
+    int size = 0;
+    count(root, size);
+    cout << "Size = " << size << endl;
+    cout << "Inorder Iterational Traversal : " << endl;
+    InorderIterational(root);
+    cout << "Preorder Iterational Traversal : " << endl;
+    PreorderIterational(root);
+    cout << "Postorder Iterational Traversal : " << endl;
+    PostorderIterational(root);
 }
