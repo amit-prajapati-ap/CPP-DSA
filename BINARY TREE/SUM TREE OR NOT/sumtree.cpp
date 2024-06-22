@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <utility>
 using namespace std;
 class node
 {
@@ -74,9 +75,55 @@ void LevelOrder(node *root)
         }
     }
 }
+pair<bool, int> FindSumTree(node *root)
+{
+    if (root == NULL)
+    {
+        return {true, 0};
+    }
+    if (root->left == NULL && root->right == NULL)
+    {
+        return {true, root->data};
+    }
+    pair<bool, int> left = FindSumTree(root->left);
+    pair<bool, int> right = FindSumTree(root->right);
+    bool condition;
+    if (root->data == (left.second + right.second))
+    {
+        condition = true;
+    }
+    else
+    {
+        condition = false;
+    }
+    pair<bool, int> ans;
+    if (left.first && right.first && condition)
+    {
+        ans.first = true;
+        ans.second = 2 * root->data;
+    }
+    else
+    {
+        ans.first = false;
+    }
+    return ans;
+}
+bool SumTree(node *root)
+{
+    bool ans = FindSumTree(root).first;
+    return ans;
+}
 int main()
 {
     node *root = NULL;
     BuildFromLevelOrder(root);
     LevelOrder(root);
+    if (SumTree(root))
+    {
+        cout << "This Tree Is Sum Tree." << endl;
+    }
+    else
+    {
+        cout << "Not a Sum Tree." << endl;
+    }
 }
