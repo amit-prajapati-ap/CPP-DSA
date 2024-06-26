@@ -1,6 +1,5 @@
 #include <iostream>
 #include <queue>
-#include <map>
 using namespace std;
 class node
 {
@@ -75,52 +74,40 @@ void LevelOrder(node *root)
         }
     }
 }
-vector<int> BottomView(node *root)
+void print(vector<int> arr)
 {
-    vector<int> ans;
-    if (root == NULL)
-    {
-        return ans;
-    }
-
-    map<int, int> topNode;
-    queue<pair<node *, int>> q;
-
-    q.push(make_pair(root, 0));
-
-    while (!q.empty())
-    {
-        pair<node *, int> temp = q.front();
-        q.pop();
-        node *frontNode = temp.first;
-        int hd = temp.second;
-        topNode[hd] = frontNode->data;
-        if (frontNode->left)
-            q.push(make_pair(frontNode->left, hd - 1));
-        if (frontNode->right)
-            q.push(make_pair(frontNode->right, hd + 1));
-    }
-
-    for (auto i : topNode)
-    {
-        ans.push_back(i.second);
-    }
-    return ans;
-}
-void print(vector<int> ans)
-{
-    for (int i : ans)
+    for (int i : arr)
     {
         cout << i << "  ";
     }
     cout << endl;
+}
+void RightUtil(node *root, vector<int> &ans, int level)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+    if (ans.size() == level)
+    {
+        ans.push_back(root->data);
+    }
+    RightUtil(root->right, ans, ++level);
+    RightUtil(root->left, ans, ++level);
+}
+vector<int> RightView(node *root)
+{
+    int level = 0;
+    vector<int> ans;
+    RightUtil(root, ans, level);
+    return ans;
 }
 int main()
 {
     node *root = NULL;
     BuildFromLevelOrder(root);
     LevelOrder(root);
-    vector<int> Bottom = BottomView(root);
-    cout << "Printing The Bottom View Elements : " << endl;
-    print(Bottom);
+    cout<<"Printing Right View Data : "<<endl;
+    vector<int> Right = RightView(root);
+    print(Right);
 }
