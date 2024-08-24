@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-vector<int> shopingCandy(int N, int K, vector<int> &candies)
+using namespace std;
+void shopingCandy(int N, int K, vector<int> &candies,vector<int> &ans)
 {
     sort(candies, candies + N);
     int mini = 0;
@@ -22,12 +23,9 @@ vector<int> shopingCandy(int N, int K, vector<int> &candies)
         freeC += K;
         buy--;
     }
-    vector<int> ans;
     ans.push_back(mini);
     ans.push_back(maxi);
-    return ans;
 }
-using namespace std;
 int main()
 {
     int n, k, data;
@@ -42,7 +40,8 @@ int main()
         cin >> data;
         price.push_back(data);
     }
-    vector<int> ans = shopingCandy(n, k, price);
+    vector<int> ans; 
+    shopingCandy(n,k,price,ans);
     cout << "Minimum Money Spend to Get All Types Of Candies : " << ans[0] << endl;
     cout << "Maximum Money Spend to Get All Types Of Candies : " << ans[1] << endl;
 }
