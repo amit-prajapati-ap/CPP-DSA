@@ -4,7 +4,7 @@
 using namespace std;
 void shopingCandy(int N, int K, vector<int> &candies,vector<int> &ans)
 {
-    sort(candies, candies + N);
+    sort(candies.begin(), candies.end());
     int mini = 0;
     int buy = 0;
     int freeC = N - 1;
