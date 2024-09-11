@@ -75,23 +75,23 @@ void inorder(node *root, vector<int> &in)
     in.push_back(root->data);
     inorder(root->right, in);
 }
-node *inordertobst(int s, int e, vector<int> &in)
+node *inordertobst(vector<int> &inorder, int s, int e)
 {
     if (s > e)
     {
-        return nullptr;
+        return NULL;
     }
-    int mid = s + e / 2;
-    node *root = new node(in[mid]);
-    root->left = inordertobst(s, mid - 1, in);
-    root->right = inordertobst(mid + 1, e, in);
-    return root;
+    int mid = (s + e) / 2;
+    node *ans = new node(inorder[mid]);
+    ans->left = inordertobst(inorder, s, mid - 1);
+    ans->right = inordertobst(inorder, mid + 1, e);
+    return ans;
 }
 node *balanced(node *root)
 {
     vector<int> in;
     inorder(root, in);
-    return inordertobst(0, in.size() - 1, in);
+    return inordertobst(in, 0, in.size() - 1);
 }
 int main()
 {
@@ -107,7 +107,9 @@ int main()
             root = insertbst(root, data);
         }
     }
+    cout << "Before Conversion : " << endl;
     print(root);
     node *balRoot = balanced(root);
+    cout << "After Conversion : " << endl;
     print(balRoot);
 }
